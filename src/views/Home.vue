@@ -1,18 +1,22 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <twitch-player
+    :channel="channel"
+  ></twitch-player>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+  import TwitchPlayer from 'vue-twitch-player';
 
-export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
+  export default {
+    // ...
+    components: {
+      TwitchPlayer,
+    },
+    data() {
+      return {
+        channel: 'wjddnjs813',
+      };
+    },
+    // ...
+  };
 </script>
