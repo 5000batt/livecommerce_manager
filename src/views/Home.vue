@@ -15,6 +15,7 @@
                 v-on="on"
                 absolute
                 right
+                @click="getProducts()"
               >
                 방송 정보추가
               </v-btn>
@@ -41,13 +42,23 @@
                           <v-select :items="items" label="카테고리"></v-select>
                         </v-col>
                         <v-col cols="12">
-                          <v-autocomplete label="상품이름"></v-autocomplete>
+                          <v-autocomplete
+                            label="상품이름"
+                            :items="name"
+                          ></v-autocomplete>
                         </v-col>
                         <v-col cols="12">
                           <v-file-input label="대표이미지"></v-file-input>
                         </v-col>
                         <v-col cols="12">
-                          <v-text-field label="가격"></v-text-field>
+                          <!-- <v-text-field
+                            label="가격"
+                            v-for="item in list"
+                            v-bind:key="item.id"
+                            >{{ item.unitPrice }}</v-text-field
+                          > -->
+                          <v-text-field label="가격" v-model="unitPrice">
+                          </v-text-field>
                         </v-col>
                       </v-row>
                     </v-col>
@@ -85,6 +96,7 @@
 
 <script>
 // import TwitchPlayer from "vue-twitch-player";
+import api from "@/api/product";
 
 export default {
   // ...
@@ -95,7 +107,10 @@ export default {
     return {
       // channel: "wjddnjs813",
       dialog: false,
-      items: ["광장시장", "의정부시장"],
+      items: ["광장시장", "그냥시장"],
+      list: [],
+      name: [],
+      unitPrice: [],
     };
   },
   mounted() {
@@ -107,7 +122,7 @@ export default {
     twitch.innerHTML = `
       new Twitch.Embed("twitch-embed", {
           width: 854,
-          height: 480,
+          height: 780,
           channel: "wjddnjs813",
           // video: "951261050",
           // only needed if your site is also embedded on embed.example.com and othersite.example.com
@@ -115,6 +130,26 @@ export default {
         });
       `;
     document.body.appendChild(twitch);
+  },
+  methods: {
+    async getProducts() {
+      console.log("--getProduct--");
+      const result = await api.list();
+      // console.log(result);
+      console.log(result.data);
+      // console.log(result.data[0]);
+      // console.log(result.data[0].name);
+      // console.log(result.data[0].unitPrice);
+      // console.log(result.data.name);
+      if (result.status == 200) {
+        this.list = result.data;
+        for (var i = 0; i <= Array.length; i++) {
+          this.name = result.data[i].name;
+          this.unitPrice = result.data[i].unitPrice;
+          // console.log(result.data[i].name);
+        }
+      }
+    },
   },
   // ...
 };
