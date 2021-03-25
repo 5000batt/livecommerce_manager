@@ -30,7 +30,7 @@
                     <v-col cols="12" sm="6" md="6">
                       <v-img
                         height="100%"
-                        src="https://picsum.photos/id/11/500/300"
+                        v-model="imageUrl"
                       ></v-img>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
@@ -48,7 +48,7 @@
                           ></v-autocomplete>
                         </v-col>
                         <v-col cols="12">
-                          <v-file-input label="대표이미지"></v-file-input>
+                          <v-file-input label="대표이미지" v-model="imageUrl"></v-file-input>
                         </v-col>
                         <v-col cols="12">
                           <!-- <v-text-field
@@ -111,6 +111,7 @@ export default {
       list: [],
       name: [],
       unitPrice: [],
+      imageUrl: [],
     };
   },
   mounted() {
@@ -135,7 +136,7 @@ export default {
     async getProducts() {
       console.log("--getProduct--");
       const result = await api.list();
-      // console.log(result);
+      console.log(result);
       console.log(result.data);
       // console.log(result.data[0]);
       // console.log(result.data[0].name);
@@ -143,11 +144,11 @@ export default {
       // console.log(result.data.name);
       if (result.status == 200) {
         this.list = result.data;
-        for (var i = 0; i <= Array.length; i++) {
-          this.name = result.data[i].name;
-          this.unitPrice = result.data[i].unitPrice;
+        this.imageUrl = result .data[0].imageUrl;
+        this.name = result.data[0].name;
+        this.unitPrice = result.data[0].unitPrice;
           // console.log(result.data[i].name);
-        }
+        
       }
     },
   },
