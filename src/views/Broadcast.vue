@@ -15,7 +15,7 @@
                 v-on="on"
                 absolute
                 right
-                @click="getProducts()"
+                @click="addBroadcast()"
               >
                 방송 정보추가
               </v-btn>
@@ -28,10 +28,7 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="6" md="6">
-                      <v-img
-                        height="100%"
-                        v-model="imageUrl"
-                      ></v-img>
+                      <v-img height="100%" v-model="imageUrl"></v-img>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
                       <v-row no-gutters>
@@ -44,11 +41,16 @@
                         <v-col cols="12">
                           <v-autocomplete
                             label="상품이름"
+                            :value="list"
                             :items="name"
+                            @change="updateProduct(list)"
                           ></v-autocomplete>
                         </v-col>
                         <v-col cols="12">
-                          <v-file-input label="대표이미지" v-model="imageUrl"></v-file-input>
+                          <v-file-input
+                            label="대표이미지"
+                            v-model="imageUrl"
+                          ></v-file-input>
                         </v-col>
                         <v-col cols="12">
                           <!-- <v-text-field
@@ -112,6 +114,7 @@ export default {
       name: [],
       unitPrice: [],
       imageUrl: [],
+      // businessNumber: [],
     };
   },
   mounted() {
@@ -133,22 +136,52 @@ export default {
     document.body.appendChild(twitch);
   },
   methods: {
-    async getProducts() {
+    async addBroadcast() {
       console.log("--getProduct--");
       const result = await api.list();
-      console.log(result);
-      console.log(result.data);
+      // console.log(result);
+      // console.log(result.data);
       // console.log(result.data[0]);
       // console.log(result.data[0].name);
       // console.log(result.data[0].unitPrice);
       // console.log(result.data.name);
       if (result.status == 200) {
         this.list = result.data;
-        this.imageUrl = result .data[0].imageUrl;
-        this.name = result.data[0].name;
-        this.unitPrice = result.data[0].unitPrice;
-          // console.log(result.data[i].name);
-        
+        // console.log(this.list[0].name);
+      }
+      // businessNumber가 "111-11-11111" 인 것만 필터링
+      const businessNumber = this.list.filter(function (person) {
+        return person.businessNumber == "111-11-11111";
+      });
+
+      this.list.filter();
+      // if (result.status == 200) {
+      //   // this.list = result.data;
+      //   this.imageUrl = result.data[0].imageUrl;
+      //   this.businessNumber = businessNumber;
+      //   console.log(businessNumber);
+      //   this.unitPrice = result.data[0].unitPrice;
+      //   // console.log(result.data[i].name);
+      // }
+      // businessNumber.forEach(function (name) {
+      //   var obj_key = Object.keys(name);
+      //   var obj_value = name[obj_key];
+      //   console.log(obj_key + " : " + obj_value);
+      // });
+      for (let j = 0; businessNumber.length; j++) {
+        this.name.push(businessNumber[j].name);
+        // this.unitPrice = businessNumber[j].unitPrice;
+      }
+      // if (businessNumber.name == "product3") {
+      //   this.unitPrice = businessNumber[1].unitPrice;
+
+      //   // console.log(businessNumber[j].name);
+      //   // console.log(businessNumber[j].unitPrice);
+      // }
+    },
+    updateProduct() {
+      if (this.name[0] === "product1") {
+        this.unitPrice = "1";
       }
     },
   },
