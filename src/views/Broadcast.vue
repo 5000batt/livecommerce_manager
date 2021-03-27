@@ -6,7 +6,7 @@
           <div id="twitch-embed"></div>
         </v-col>
         <v-col cols="12" sm="4">
-          <v-dialog v-model="dialog" persistent max-width="600px">
+          <v-dialog v-model="dialog" persistent max-width="600px" @click:outside="dialog = false">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="primary"
@@ -23,12 +23,13 @@
             <v-card>
               <v-card-title>
                 <span class="headline">방송 정보</span>
+                <v-btn color="blue darken-1" @click="dialog = false" right absolute icon><v-icon>mdi-close</v-icon></v-btn>
               </v-card-title>
               <v-card-text>
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="6" md="6">
-                      <v-img height="100%" v-model="imageUrl"></v-img>
+                      <v-img height="100%" v-bind:src="imageUrl"></v-img>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
                       <v-row no-gutters>
@@ -41,9 +42,8 @@
                         <v-col cols="12">
                           <v-autocomplete
                             label="상품이름"
-                            :value="list"
                             :items="name"
-                            @change="updateProduct(list)"
+                            @change="updateProduct"
                           ></v-autocomplete>
                         </v-col>
                         <v-col cols="12">
@@ -97,30 +97,23 @@
 </template>
 
 <script>
-// import TwitchPlayer from "vue-twitch-player";
 import api from "@/api/product";
 
 export default {
   // ...
   components: {
-    // TwitchPlayer,
   },
   data() {
     return {
-      // channel: "wjddnjs813",
       dialog: false,
       items: ["광장시장", "그냥시장"],
       list: [],
       name: [],
       unitPrice: [],
       imageUrl: [],
-      // businessNumber: [],
     };
   },
   mounted() {
-    // const library = document.createElement("script");
-    // library.src = "https://embed.twitch.tv/embed/v1.js";
-    // document.body.appendChild(library);
 
     const twitch = document.createElement("script");
     twitch.innerHTML = `
@@ -141,47 +134,36 @@ export default {
       const result = await api.list();
       // console.log(result);
       // console.log(result.data);
-      // console.log(result.data[0]);
-      // console.log(result.data[0].name);
-      // console.log(result.data[0].unitPrice);
-      // console.log(result.data.name);
       if (result.status == 200) {
         this.list = result.data;
-        // console.log(this.list[0].name);
       }
       // businessNumber가 "111-11-11111" 인 것만 필터링
       const businessNumber = this.list.filter(function (person) {
         return person.businessNumber == "111-11-11111";
       });
-
-      this.list.filter();
-      // if (result.status == 200) {
-      //   // this.list = result.data;
-      //   this.imageUrl = result.data[0].imageUrl;
-      //   this.businessNumber = businessNumber;
-      //   console.log(businessNumber);
-      //   this.unitPrice = result.data[0].unitPrice;
-      //   // console.log(result.data[i].name);
-      // }
-      // businessNumber.forEach(function (name) {
-      //   var obj_key = Object.keys(name);
-      //   var obj_value = name[obj_key];
-      //   console.log(obj_key + " : " + obj_value);
-      // });
-      for (let j = 0; businessNumber.length; j++) {
-        this.name.push(businessNumber[j].name);
-        // this.unitPrice = businessNumber[j].unitPrice;
-      }
-      // if (businessNumber.name == "product3") {
-      //   this.unitPrice = businessNumber[1].unitPrice;
-
-      //   // console.log(businessNumber[j].name);
-      //   // console.log(businessNumber[j].unitPrice);
+      this.list = businessNumber
+      // name 값들을 배열로 추출
+      let name = this.list.map(a => a.name);
+      // console.log(name);
+      this.name = name;
+      
+      // for (let j = 0; businessNumber.length; j++) {
+      //   this.name.push(businessNumber[j].name);
       // }
     },
-    updateProduct() {
-      if (this.name[0] === "product1") {
-        this.unitPrice = "1";
+    updateProduct(a) {
+      // businessNumber가 "111-11-11111" 인 것만 필터링
+      // const businessNumber = this.list.filter(function (person) {
+      //   return person.businessNumber == "111-11-11111";
+      // });
+      let unitPrice = this.list.map(a => a.unitPrice)
+      let imageUrl = this.list.map(a => a.imageUrl)
+      console.log(a);
+      for (let j = 0; j < this.list.length; j++) {
+        if ( a == this.name[j]) {
+        this.unitPrice = unitPrice[j]
+        this.imageUrl = imageUrl[j]
+        }
       }
     },
   },
