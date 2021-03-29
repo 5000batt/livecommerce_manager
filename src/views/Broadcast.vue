@@ -21,7 +21,7 @@
                       dark
                       v-bind="attrs"
                       v-on="on"
-                      @click="addBroadcast()"
+                      @click="getProduct()"
                     >
                       방송 정보추가
                     </v-btn>
@@ -47,19 +47,24 @@
                           <v-col cols="12" md="6">
                             <v-row no-gutters>
                               <v-col cols="12">
-                                <v-text-field label="방송제목"></v-text-field>
+                                <v-text-field
+                                  label="방송제목"
+                                  v-model="broadcastTitle"
+                                ></v-text-field>
                               </v-col>
                               <v-col cols="12">
-                                <v-select
-                                  :items="items"
+                                <v-autocomplete
+                                  :items="category"
                                   label="카테고리"
-                                ></v-select>
+                                  v-model="category"
+                                ></v-autocomplete>
                               </v-col>
                               <v-col cols="12">
                                 <v-autocomplete
                                   label="상품이름"
                                   :items="name"
                                   @change="updateProduct"
+                                  v-model="productName"
                                 ></v-autocomplete>
                               </v-col>
                               <v-col cols="12">
@@ -79,28 +84,28 @@
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="dialog = false">
+                      <v-btn color="blue darken-1" text @click="addBroadcasts">
                         저장
                       </v-btn>
-                      <v-btn color="blue darken-1" text @click="dialog = false">
+                      <!-- <v-btn color="blue darken-1" text @click="dialog = false">
                         수정
                       </v-btn>
                       <v-btn color="blue darken-1" text @click="dialog = false">
                         삭제
-                      </v-btn>
+                      </v-btn> -->
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
               </v-card-title>
               <v-card-text>
                 <v-container>
-                  <v-col cols="12">1 </v-col>
-                  <!-- <v-col cols="12">1 </v-col>
-                <v-col cols="12">1 </v-col>
-                <v-col cols="12">1 </v-col>
-                <v-col cols="12">1 </v-col>
-                <v-col cols="12">1 </v-col>
-                <v-col cols="12">1 </v-col> -->
+                  <broadcast-list
+                    v-for="(item, i) in items"
+                    :key="i"
+                    :item="item"
+                    :index="i"
+                  >
+                  </broadcast-list>
                 </v-container>
               </v-card-text>
               <v-footer absolute>
@@ -115,7 +120,7 @@
                   <v-btn color="primary" text @click="broadcast"
                     >방송출력</v-btn
                   >
-                  <v-btn color="primary" text>방송등록</v-btn>
+                  <!-- <v-btn color="primary" text>방송등록</v-btn> -->
                 </v-card-actions>
               </v-footer>
             </v-card>
@@ -127,25 +132,40 @@
 </template>
 
 <script>
+import BroadcastList from "@/components/BroadcastList.vue";
 import api from "@/api/product";
+import api2 from "@/api/broadcast";
 
 export default {
   // ...
-  components: {},
-  data() {
-    return {
-      dialog: false,
-      items: ["광장시장", "그냥시장"],
-      list: [],
-      name: [],
-      unitPrice: [],
-      imageUrl: [],
-      channelId: "",
-    };
+  components: {
+    BroadcastList,
   },
-  mounted() {},
+  data: () => ({
+    dialog: false,
+    category: ["광장시장", "그냥시장"],
+    items: [],
+    list: [],
+    name: [],
+    unitPrice: "",
+    imageUrl: "",
+    channelId: "",
+    broadcastTitle: "",
+    productName: "",
+  }),
+  mounted() {
+    this.getBroadcasts();
+  },
   methods: {
-    async addBroadcast() {
+    async getBroadcasts() {
+      const result = await api2.list();
+      console.log(result);
+      console.log(result.data);
+      if (result.status == 200) {
+        this.items = result.data;
+      }
+    },
+    async getProduct() {
       console.log("--getProduct--");
       const result = await api.list();
       // console.log(result);
@@ -181,6 +201,24 @@ export default {
           this.imageUrl = imageUrl[j];
         }
       }
+    },
+    async addBroadcasts() {
+      this.dialog = false;
+
+      const broadcast = {
+        broadcastTitle: this.broadcastTitle,
+        category: this.category,
+        productName: this.productName,
+        imageUrl: this.imageUrl,
+        unitPrice: this.unitPrice,
+        channelId: this.channelId,
+      };
+
+      const result = await api2.post(broadcast);
+      // console.log(this.title);
+
+      console.log(result.status);
+      console.log(result.data);
     },
     broadcast() {
       // console.log(this.channelId);
