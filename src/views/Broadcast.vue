@@ -71,6 +71,7 @@
                                 <v-file-input
                                   label="대표이미지"
                                   v-model="imageUrl"
+                                  chips
                                 ></v-file-input>
                               </v-col>
                               <v-col cols="12">
@@ -145,7 +146,7 @@ export default {
     dialog: false,
     category: ["광장시장", "그냥시장"],
     items: [],
-    list: [],
+    products: [],
     name: [],
     unitPrice: "",
     imageUrl: "",
@@ -161,6 +162,7 @@ export default {
       const result = await api2.list();
       console.log(result);
       console.log(result.data);
+
       if (result.status == 200) {
         this.items = result.data;
       }
@@ -168,18 +170,19 @@ export default {
     async getProduct() {
       console.log("--getProduct--");
       const result = await api.list();
+      console.log("imageUrl:" + this.imageUrl);
       // console.log(result);
       // console.log(result.data);
       if (result.status == 200) {
-        this.list = result.data;
+        this.products = result.data;
       }
       // businessNumber가 "111-11-11111" 인 것만 필터링
-      const businessNumber = this.list.filter(function (person) {
-        return person.businessNumber == "111-11-11111";
-      });
-      this.list = businessNumber;
+      // const businessNumber = this.list.filter(function (person) {
+      //   return person.businessNumber == "111-11-11111";
+      // });
+      // this.list = businessNumber;
       // name 값들을 배열로 추출
-      let name = this.list.map((a) => a.name);
+      let name = this.products.map((a) => a.name);
       // console.log(name);
       this.name = name;
 
@@ -192,13 +195,14 @@ export default {
       // const businessNumber = this.list.filter(function (person) {
       //   return person.businessNumber == "111-11-11111";
       // });
-      let unitPrice = this.list.map((a) => a.unitPrice);
-      let imageUrl = this.list.map((a) => a.imageUrl);
+      let unitPrice = this.products.map((a) => a.unitPrice);
+      let imageUrl = this.products.map((a) => a.imageUrl);
       console.log(a);
-      for (let j = 0; j < this.list.length; j++) {
+      for (let j = 0; j < this.products.length; j++) {
         if (a == this.name[j]) {
           this.unitPrice = unitPrice[j];
           this.imageUrl = imageUrl[j];
+          console.log("imageUrl:" + this.imageUrl);
         }
       }
     },
@@ -213,7 +217,7 @@ export default {
         unitPrice: this.unitPrice,
         channelId: this.channelId,
       };
-
+      console.log(this.productName);
       const result = await api2.post(broadcast);
       // console.log(this.title);
 

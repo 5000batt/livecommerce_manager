@@ -43,7 +43,7 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <v-img height="100%"></v-img>
+                    <v-img height="100%" v-bind:src="item.imageUrl"></v-img>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-row no-gutters>
@@ -63,13 +63,16 @@
                       <v-col cols="12">
                         <v-autocomplete
                           :items="item"
-                          item-text="name"
-                          v-model="item.name"
+                          item-text="productName"
                           label="상품이름"
+                          v-model="item"
                         ></v-autocomplete>
                       </v-col>
                       <v-col cols="12">
-                        <v-file-input label="대표이미지"></v-file-input>
+                        <v-file-input
+                          label="대표이미지"
+                          v-model="item.imageUrl"
+                        ></v-file-input>
                       </v-col>
                       <v-col cols="12">
                         <v-text-field label="가격" v-model="item.unitPrice">
