@@ -30,12 +30,7 @@
           <v-card>
             <v-card-title>
               <span class="headline">방송 정보</span>
-              <v-btn
-                color="blue darken-1"
-                @click="dialog = false"
-                right
-                absolute
-                icon
+              <v-btn color="#6441a5" @click="dialog = false" right absolute icon
                 ><v-icon>mdi-close</v-icon></v-btn
               >
             </v-card-title>
@@ -55,7 +50,7 @@
                       </v-col>
                       <v-col cols="12">
                         <v-select
-                          v-bind:items="item.category"
+                          :items="item.category"
                           v-model="item.category"
                           label="카테고리"
                         ></v-select>
@@ -65,7 +60,7 @@
                           :items="item"
                           item-text="productName"
                           label="상품이름"
-                          v-model="item"
+                          v-model="item.productName"
                         ></v-autocomplete>
                       </v-col>
                       <v-col cols="12">
@@ -85,21 +80,13 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="dialog = false"
-                left
-                absolute
-              >
+              <v-btn color="#6441a5" text @click="dialog = false" left absolute>
                 등록
               </v-btn>
-              <v-btn color="blue darken-1" text @click="dialog = false">
+              <v-btn color="#6441a5" text @click="modBroadcast(item)">
                 수정
               </v-btn>
-              <v-btn color="blue darken-1" text @click="del(item)">
-                삭제
-              </v-btn>
+              <v-btn color="#6441a5" text @click="del(item)"> 삭제 </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -115,7 +102,6 @@ import api2 from "@/api/broadcast";
 export default {
   props: ["item", "index"],
   data: () => ({
-    selected: [],
     dialog: false,
     items: [],
   }),
@@ -123,12 +109,35 @@ export default {
   methods: {
     async Broadcast() {
       this.dialog = true;
-      console.log(this.selected);
     },
     async del(item) {
       this.dialog = false;
 
       await api2.del(item.id);
+
+      window.location.reload();
+    },
+    async modBroadcast(item) {
+      this.dialog = false;
+
+      console.log(`item: ${item.id}`);
+      // console.log(item);
+      // console.log(item.broadcastTitle);
+      console.log(item.imageUrl);
+
+      const broadcast = {
+        broadcastTitle: item.broadcastTitle,
+        category: item.category,
+        productName: item.productName,
+        imageUrl: item.imageUrl,
+        unitPrice: item.unitPrice,
+        channelId: item.channelId,
+      };
+
+      const result = await api2.patch(item.id, broadcast);
+      console.log(result);
+      console.log(result.data);
+      // console.log(item.broadcastTitle);
     },
   },
 };

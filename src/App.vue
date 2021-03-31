@@ -1,12 +1,12 @@
 <template>
   <v-app>
-    <v-app-bar color="primary" dark app>
+    <v-app-bar color="#6441a5" dark app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-app-bar-title>라이브 커머스 관리자</v-app-bar-title>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" app>
       <v-list dense>
-        <v-list-item-group v-model="selectedItem" color="primary">
+        <v-list-item-group v-model="selectedItem" color="#6441a5">
           <v-list-item
             v-for="(item, i) in items"
             :key="i"
