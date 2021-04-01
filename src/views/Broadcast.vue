@@ -88,12 +88,6 @@
                       <v-btn color="#6441a5" text @click="addBroadcasts">
                         저장
                       </v-btn>
-                      <!-- <v-btn color="blue darken-1" text @click="dialog = false">
-                        수정
-                      </v-btn>
-                      <v-btn color="blue darken-1" text @click="dialog = false">
-                        삭제
-                      </v-btn> -->
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -156,6 +150,7 @@ export default {
     productName: "",
     categoryName: [],
     imageFile: [],
+    id: "",
   }),
   mounted() {
     this.getBroadcasts();
@@ -168,6 +163,8 @@ export default {
 
       if (result.status == 200) {
         this.items = result.data;
+        // products가 object로 나옴
+        // console.log(this.items[0].products);
       }
     },
     async getProduct() {
@@ -215,12 +212,15 @@ export default {
       // });
       let unitPrice = this.products.map((a) => a.unitPrice);
       let imageUrl = this.products.map((a) => a.imageUrl);
+      let id = this.products.map((a) => a.id);
       console.log(a);
       for (let j = 0; j < this.products.length; j++) {
         if (a == this.name[j]) {
           this.unitPrice = unitPrice[j];
           this.imageUrl = imageUrl[j];
+          this.id = id[j];
           // console.log("imageUrl:" + this.imageUrl);
+          console.log(this.id);
         }
       }
     },
@@ -231,18 +231,19 @@ export default {
         broadcastTitle: this.broadcastTitle,
         category: this.category,
         productName: this.productName,
-        imageUrl: this.imageUrl,
+        // imageUrl: this.imageUrl,
         unitPrice: this.unitPrice,
         channelId: this.channelId,
+        productsId: this.id,
       };
       console.log(this.productName);
       const result = await api2.post(broadcast);
       // console.log(this.title);
 
       console.log(result.status);
-      // console.log(result.data);
+      console.log(result.data);
 
-      window.location.reload();
+      // window.location.reload();
     },
     broadcast() {
       // console.log(this.channelId);
