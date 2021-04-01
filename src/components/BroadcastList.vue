@@ -38,10 +38,7 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <v-img
-                      height="100%"
-                      v-bind:src="item.products.imageUrl"
-                    ></v-img>
+                    <v-img height="100%" v-bind:src="item.imageUrl"></v-img>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-row no-gutters>
@@ -117,9 +114,8 @@ export default {
   }),
   mounted() {},
   methods: {
-    async Broadcast(item) {
+    async Broadcast() {
       this.dialog = true;
-      console.log(item.products.id);
 
       const result = await api.list();
       const result2 = await api3.category();

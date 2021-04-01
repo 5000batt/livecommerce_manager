@@ -231,15 +231,15 @@ export default {
         broadcastTitle: this.broadcastTitle,
         category: this.category,
         productName: this.productName,
-        // imageUrl: this.imageUrl,
+        imageUrl: this.imageUrl,
         unitPrice: this.unitPrice,
         channelId: this.channelId,
-        productsId: this.id,
+        productId: this.id,
       };
-      console.log(this.productName);
+      // console.log(this.id);
       const result = await api2.post(broadcast);
       // console.log(this.title);
-
+      console.log(result);
       console.log(result.status);
       console.log(result.data);
 
