@@ -42,7 +42,11 @@
                       <v-container>
                         <v-row>
                           <v-col cols="12" md="6">
-                            <v-img height="100%" v-bind:src="imageUrl"></v-img>
+                            <v-img
+                              height="100%"
+                              :src="imageUrl"
+                              :alt="productName"
+                            ></v-img>
                           </v-col>
                           <v-col cols="12" md="6">
                             <v-row no-gutters>
@@ -95,10 +99,9 @@
               <v-card-text>
                 <v-container>
                   <broadcast-list
-                    v-for="(item, i) in items"
+                    v-for="(item, i) in broadcasts"
                     :key="i"
                     :item="item"
-                    :index="i"
                   >
                   </broadcast-list>
                 </v-container>
@@ -112,10 +115,9 @@
                     v-model="channelId"
                     >입력</v-text-field
                   >
-                  <v-btn color="#6441a5" text @click="broadcast"
+                  <v-btn color="#6441a5" text @click.once="broadcast"
                     >방송출력</v-btn
                   >
-                  <!-- <v-btn color="primary" text>방송등록</v-btn> -->
                 </v-card-actions>
               </v-footer>
             </v-card>
@@ -139,9 +141,10 @@ export default {
   },
   data: () => ({
     dialog: false,
-    category: [],
-    items: [],
+    broadcasts: [],
     products: [],
+    category: [],
+
     name: [],
     unitPrice: "",
     imageUrl: "",
@@ -162,9 +165,9 @@ export default {
       console.log(result.data);
 
       if (result.status == 200) {
-        this.items = result.data;
+        this.broadcasts = result.data;
         // products가 object로 나옴
-        // console.log(this.items[0].products);
+        // console.log(this.broadcasts[0].products);
       }
     },
     async getProduct() {
@@ -206,10 +209,6 @@ export default {
       this.imageUrl = "";
     },
     updateProduct(a) {
-      // businessNumber가 "111-11-11111" 인 것만 필터링
-      // const businessNumber = this.list.filter(function (person) {
-      //   return person.businessNumber == "111-11-11111";
-      // });
       let unitPrice = this.products.map((a) => a.unitPrice);
       let imageUrl = this.products.map((a) => a.imageUrl);
       let id = this.products.map((a) => a.id);
@@ -243,7 +242,8 @@ export default {
       console.log(result.status);
       console.log(result.data);
 
-      // window.location.reload();
+      //F5 -> 방송출력화면도 새로고침으로 사라짐
+      window.location.reload();
     },
     broadcast() {
       // console.log(this.channelId);
