@@ -208,7 +208,7 @@ export default {
       this.channelId = "";
       this.imageUrl = "";
     },
-    updateProduct(a) {
+    async updateProduct(a) {
       let unitPrice = this.products.map((a) => a.unitPrice);
       let imageUrl = this.products.map((a) => a.imageUrl);
       let id = this.products.map((a) => a.id);
@@ -233,7 +233,7 @@ export default {
         imageUrl: this.imageUrl,
         unitPrice: this.unitPrice,
         channelId: this.channelId,
-        productId: this.id,
+        product: { id: this.id },
       };
       // console.log(this.id);
       const result = await api2.post(broadcast);
@@ -243,7 +243,7 @@ export default {
       console.log(result.data);
 
       //F5 -> 방송출력화면도 새로고침으로 사라짐
-      window.location.reload();
+      // window.location.reload();
     },
     broadcast() {
       // console.log(this.channelId);

@@ -40,7 +40,7 @@
                   <v-col cols="12" md="6">
                     <v-img
                       height="100%"
-                      :src="item.imageUrl"
+                      :src="item.product.imageUrl"
                       :alt="item.productName"
                     ></v-img>
                   </v-col>
@@ -84,7 +84,13 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="#6441a5" text @click="dialog = false" left absolute>
+              <v-btn
+                color="#6441a5"
+                text
+                @click="regBroadcast(item)"
+                left
+                absolute
+              >
                 등록
               </v-btn>
               <v-btn color="#6441a5" text @click="modBroadcast(item)">
@@ -113,7 +119,6 @@ export default {
     categoryName: [],
     products: [],
     name: [],
-    imageUrl: "",
     unitPrice: "",
   }),
   mounted() {},
@@ -167,20 +172,25 @@ export default {
       console.log(result.data);
       // console.log(item.broadcastTitle);
     },
-    updateProduct(a) {
+    async updateProduct(a) {
       let unitPrice = this.products.map((a) => a.unitPrice);
-      let imageUrl = this.products.map((a) => a.imageUrl);
       // let id = this.products.map((a) => a.id);
       console.log(a);
       for (let j = 0; j < this.products.length; j++) {
         if (a == this.name[j]) {
           this.unitPrice = unitPrice[j];
-          this.imageUrl = imageUrl[j];
           // this.id = id[j];
           // console.log("imageUrl:" + this.imageUrl);
           // console.log(this.id);
         }
       }
+    },
+    async regBroadcast(item) {
+      this.dialog = false;
+
+      const result = await api2.register(item.id);
+      console.log(result);
+      console.log(result.data);
     },
   },
 };
