@@ -146,8 +146,6 @@ export default {
       this.dialog = false;
 
       this.$emit("del", this.index, this.item.id);
-
-      // window.location.reload();
     },
     async modBroadcast(item) {
       this.dialog = false;

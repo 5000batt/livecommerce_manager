@@ -244,8 +244,11 @@ export default {
       console.log(result.status);
       console.log(result.data);
 
-      //F5 -> 방송출력화면도 새로고침으로 사라짐
-      // window.location.reload();
+      const newBroadcast = result.data;
+
+      if (result.status == 200) {
+        this.broadcasts.unshift(newBroadcast);
+      }
 
       // if (result.status == 200) {
       //   const newBroadcast = result.data;
@@ -279,7 +282,7 @@ export default {
       console.log(result.data);
 
       if (result.status == 200) {
-        this.broadcasts.unshift(index, 1);
+        this.broadcasts.splice(index, 1);
       }
     },
     broadcast() {
