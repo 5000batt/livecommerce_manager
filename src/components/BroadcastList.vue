@@ -114,6 +114,7 @@ export default {
     products: [],
     name: [],
     broadcasts: [],
+    unitPrice: "",
   }),
   mounted() {},
   methods: {
