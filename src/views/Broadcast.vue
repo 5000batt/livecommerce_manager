@@ -102,6 +102,8 @@
                     v-for="(item, i) in broadcasts"
                     :key="i"
                     :item="item"
+                    :index="i"
+                    @del="delBroadcast"
                   >
                   </broadcast-list>
                 </v-container>
@@ -144,7 +146,7 @@ export default {
     broadcasts: [],
     products: [],
     category: [],
-
+    files: [],
     name: [],
     unitPrice: "",
     imageUrl: "",
@@ -244,6 +246,41 @@ export default {
 
       //F5 -> 방송출력화면도 새로고침으로 사라짐
       // window.location.reload();
+
+      // if (result.status == 200) {
+      //   const newBroadcast = result.data;
+      //   newBroadcast.files = [];
+
+      //   if (this.files && this.files.length > 0) {
+      //     for (let file of this.files) {
+      //       const form = new FormData();
+      //       form.append("data", file);
+      //       const result = await api.uploadFile(newBroadcast.id, form);
+      //       console.log(result.status);
+      //       console.log(result.data);
+
+      //       newBroadcast.files.push({
+      //         ...result.data,
+      //       });
+      //     }
+      //   }
+
+      //   console.log(newBroadcast);
+
+      //   this.broadcasts.unshift(newBroadcast);
+      // }
+
+      // this.files = [];
+    },
+    async delBroadcast(index, id) {
+      console.log(`index:${index} - id:${id}`);
+      const result = await api2.del(id);
+      console.log(result);
+      console.log(result.data);
+
+      if (result.status == 200) {
+        this.broadcasts.unshift(index, 1);
+      }
     },
     broadcast() {
       // console.log(this.channelId);

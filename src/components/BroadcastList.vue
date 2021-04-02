@@ -37,12 +37,9 @@
             <v-card-text>
               <v-container>
                 <v-row>
+                  <!-- :src="item.product.imageUrl" -->
                   <v-col cols="12" md="6">
-                    <v-img
-                      height="100%"
-                      :src="item.product.imageUrl"
-                      :alt="item.productName"
-                    ></v-img>
+                    <v-img height="100%" :alt="item.productName"></v-img>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-row no-gutters>
@@ -68,10 +65,7 @@
                         ></v-autocomplete>
                       </v-col>
                       <v-col cols="12">
-                        <v-file-input
-                          label="대표이미지"
-                          v-model="item.imageUrl"
-                        ></v-file-input>
+                        <v-file-input label="대표이미지"></v-file-input>
                       </v-col>
                       <v-col cols="12">
                         <v-text-field label="가격" v-model="item.unitPrice">
@@ -119,7 +113,7 @@ export default {
     categoryName: [],
     products: [],
     name: [],
-    unitPrice: "",
+    broadcasts: [],
   }),
   mounted() {},
   methods: {
@@ -127,14 +121,19 @@ export default {
       this.dialog = true;
 
       const result = await api.list();
-      const result2 = await api3.category();
+      const result2 = await api.list();
+      const result3 = await api3.category();
 
       if (result.status == 200) {
         this.products = result.data;
       }
 
       if (result2.status == 200) {
-        this.category = result2.data;
+        this.broadcasts = result2.data;
+      }
+
+      if (result3.status == 200) {
+        this.category = result3.data;
       }
 
       let name = this.products.map((a) => a.name);
@@ -143,12 +142,12 @@ export default {
       this.name = name;
       this.categoryName = category;
     },
-    async del(item) {
+    del() {
       this.dialog = false;
 
-      await api2.del(item.id);
+      this.$emit("del", this.index, this.item.id);
 
-      window.location.reload();
+      // window.location.reload();
     },
     async modBroadcast(item) {
       this.dialog = false;
@@ -156,13 +155,13 @@ export default {
       console.log(`item: ${item.id}`);
       // console.log(item);
       // console.log(item.broadcastTitle);
-      console.log(item.imageUrl);
+      // console.log(item.imageUrl);
 
       const broadcast = {
         broadcastTitle: item.broadcastTitle,
         category: item.category,
         productName: item.productName,
-        imageUrl: item.imageUrl,
+        // imageUrl: item.imageUrl,
         unitPrice: item.unitPrice,
         channelId: item.channelId,
       };
