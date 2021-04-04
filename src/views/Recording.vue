@@ -13,12 +13,7 @@
         </v-col>
         <v-col cols="12" md="1">
           <template>
-            <v-dialog
-              v-model="dialog"
-              persistent
-              max-width="600px"
-              @click:outside="dialog = false"
-            >
+            <v-dialog v-model="dialog" max-width="300px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   color="#6441a5"
@@ -124,18 +119,6 @@ export default {
     recordings: [],
   }),
   mounted() {
-    // const twitch = document.createElement("script");
-    // twitch.innerHTML = `
-    //     new Twitch.Embed("twitch-embed", {
-    //         width: "100%",
-    //         height: 780,
-    //         // channel: "wjddnjs913",
-    //         video: "960740701",
-    //         // only needed if your site is also embedded on embed.example.com and othersite.example.com
-    //         parent: ["embed.example.com", "othersite.example.com"]
-    //       });
-    //     `;
-    // document.body.appendChild(twitch);
     this.getRecording();
   },
   methods: {

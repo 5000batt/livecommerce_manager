@@ -20,13 +20,7 @@
             </v-list-item-content>
           </template>
         </v-list-item>
-        <v-dialog
-          v-bind:key="item.id"
-          v-model="dialog"
-          persistent
-          max-width="600px"
-          @click:outside="dialog = false"
-        >
+        <v-dialog v-bind:key="item.id" v-model="dialog" max-width="600px">
           <v-card>
             <v-card-title>
               <span class="headline">방송 정보</span>
@@ -37,9 +31,15 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <!-- :src="item.product.imageUrl" -->
                   <v-col cols="12" md="6">
-                    <v-img height="100%" :alt="item.productName"></v-img>
+                    <div v-for="(file, i) in item.imageFiles" :key="i">
+                      <v-img
+                        height="100%"
+                        v-if="file.contentType.indexOf('image') > -1"
+                        :src="file.dataUrl"
+                        :alt="file.fileame"
+                      ></v-img>
+                    </div>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-row no-gutters>
@@ -65,7 +65,11 @@
                         ></v-autocomplete>
                       </v-col>
                       <v-col cols="12">
-                        <v-file-input label="대표이미지"></v-file-input>
+                        <v-file-input
+                          label="대표이미지"
+                          prepend-icon="mdi-image"
+                          accept="image/png, image/jpeg, image/bmp"
+                        ></v-file-input>
                       </v-col>
                       <v-col cols="12">
                         <v-text-field label="가격" v-model="item.unitPrice">

@@ -9,12 +9,7 @@
           <template>
             <v-card height="780">
               <v-card-title>
-                <v-dialog
-                  v-model="dialog"
-                  persistent
-                  max-width="600px"
-                  @click:outside="dialog = false"
-                >
+                <v-dialog v-model="dialog" max-width="600px">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       color="#6441a5"
@@ -74,7 +69,9 @@
                               <v-col cols="12">
                                 <v-file-input
                                   label="대표이미지"
-                                  v-model="imageFile"
+                                  prepend-icon="mdi-image"
+                                  accept="image/png, image/jpeg, image/bmp"
+                                  v-model="imageFiles"
                                   chips
                                 ></v-file-input>
                               </v-col>
@@ -154,7 +151,7 @@ export default {
     broadcastTitle: "",
     productName: "",
     categoryName: [],
-    imageFile: [],
+    imageFiles: [],
     id: "",
   }),
   mounted() {
@@ -163,8 +160,8 @@ export default {
   methods: {
     async getBroadcasts() {
       const result = await api2.list();
-      console.log(result);
-      console.log(result.data);
+      // console.log(result);
+      // console.log(result.data);
 
       if (result.status == 200) {
         this.broadcasts = result.data;
@@ -205,7 +202,7 @@ export default {
       this.broadcastTitle = "";
       this.category = [];
       this.productName = "";
-      this.imageFile = [];
+      // this.imageFiles = [];
       this.unitPrice = "";
       this.channelId = "";
       this.imageUrl = "";
@@ -214,14 +211,14 @@ export default {
       let unitPrice = this.products.map((a) => a.unitPrice);
       let imageUrl = this.products.map((a) => a.imageUrl);
       let id = this.products.map((a) => a.id);
-      console.log(a);
+      // console.log(a);
       for (let j = 0; j < this.products.length; j++) {
         if (a == this.name[j]) {
           this.unitPrice = unitPrice[j];
           this.imageUrl = imageUrl[j];
           this.id = id[j];
           // console.log("imageUrl:" + this.imageUrl);
-          console.log(this.id);
+          // console.log(this.id);
         }
       }
     },
@@ -240,40 +237,35 @@ export default {
       // console.log(this.id);
       const result = await api2.post(broadcast);
       // console.log(this.title);
-      console.log(result);
-      console.log(result.status);
-      console.log(result.data);
-
-      const newBroadcast = result.data;
+      // console.log(result);
+      // console.log(result.status);
+      // console.log(result.data);
 
       if (result.status == 200) {
+        const newBroadcast = result.data;
+        console.log(newBroadcast);
+
+        newBroadcast.imageFiles = [];
+
+        if (this.imageFiles && this.imageFiles.length > 0) {
+          for (let file of this.imageFiles) {
+            const form = new FormData();
+            form.append("data", file);
+
+            const result = await api2.uploadFile(newBroadcast.id, form);
+            console.log(result.status);
+            console.log(result.data);
+
+            newBroadcast.imageFiles.push({
+              ...result.data,
+            });
+          }
+        }
+
+        // console.log(newBroadcast);
+
         this.broadcasts.unshift(newBroadcast);
       }
-
-      // if (result.status == 200) {
-      //   const newBroadcast = result.data;
-      //   newBroadcast.files = [];
-
-      //   if (this.files && this.files.length > 0) {
-      //     for (let file of this.files) {
-      //       const form = new FormData();
-      //       form.append("data", file);
-      //       const result = await api.uploadFile(newBroadcast.id, form);
-      //       console.log(result.status);
-      //       console.log(result.data);
-
-      //       newBroadcast.files.push({
-      //         ...result.data,
-      //       });
-      //     }
-      //   }
-
-      //   console.log(newBroadcast);
-
-      //   this.broadcasts.unshift(newBroadcast);
-      // }
-
-      // this.files = [];
     },
     async delBroadcast(index, id) {
       console.log(`index:${index} - id:${id}`);
