@@ -14,9 +14,7 @@
                 v-text="item.category"
               ></v-list-item-subtitle>
 
-              <v-list-item-subtitle
-                v-text="item.unitPrice"
-              ></v-list-item-subtitle>
+              <v-list-item-subtitle v-text="item.price"></v-list-item-subtitle>
             </v-list-item-content>
           </template>
         </v-list-item>
@@ -72,7 +70,7 @@
                         ></v-file-input>
                       </v-col>
                       <v-col cols="12">
-                        <v-text-field label="가격" v-model="item.unitPrice">
+                        <v-text-field label="가격" v-model="item.price">
                         </v-text-field>
                       </v-col>
                     </v-row>
@@ -118,7 +116,7 @@ export default {
     products: [],
     name: [],
     broadcasts: [],
-    unitPrice: "",
+    price: "",
   }),
   mounted() {},
   methods: {
@@ -126,7 +124,7 @@ export default {
       this.dialog = true;
 
       const result = await api.list();
-      const result2 = await api.list();
+      const result2 = await api2.list();
       const result3 = await api3.category();
 
       if (result.status == 200) {
@@ -165,7 +163,7 @@ export default {
         category: item.category,
         productName: item.productName,
         // imageUrl: item.imageUrl,
-        unitPrice: item.unitPrice,
+        price: item.price,
         channelId: item.channelId,
       };
 
@@ -175,12 +173,12 @@ export default {
       // console.log(item.broadcastTitle);
     },
     async updateProduct(a) {
-      let unitPrice = this.products.map((a) => a.unitPrice);
+      let price = this.products.map((a) => a.price);
       // let id = this.products.map((a) => a.id);
       console.log(a);
       for (let j = 0; j < this.products.length; j++) {
         if (a == this.name[j]) {
-          this.unitPrice = unitPrice[j];
+          this.price = price[j];
           // this.id = id[j];
           // console.log("imageUrl:" + this.imageUrl);
           // console.log(this.id);

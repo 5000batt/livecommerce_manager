@@ -39,7 +39,7 @@
                           <v-col cols="12" md="6">
                             <v-img
                               height="100%"
-                              :src="imageUrl"
+                              :src="images"
                               :alt="productName"
                             ></v-img>
                           </v-col>
@@ -76,7 +76,7 @@
                                 ></v-file-input>
                               </v-col>
                               <v-col cols="12">
-                                <v-text-field label="가격" v-model="unitPrice">
+                                <v-text-field label="가격" v-model="price">
                                 </v-text-field>
                               </v-col>
                             </v-row>
@@ -145,8 +145,8 @@ export default {
     category: [],
     files: [],
     name: [],
-    unitPrice: "",
-    imageUrl: "",
+    price: "",
+    images: "",
     channelId: "",
     broadcastTitle: "",
     productName: "",
@@ -203,19 +203,19 @@ export default {
       this.category = [];
       this.productName = "";
       // this.imageFiles = [];
-      this.unitPrice = "";
+      this.price = "";
       this.channelId = "";
-      this.imageUrl = "";
+      this.images = "";
     },
     async updateProduct(a) {
-      let unitPrice = this.products.map((a) => a.unitPrice);
-      let imageUrl = this.products.map((a) => a.imageUrl);
+      let price = this.products.map((a) => a.price);
+      let images = this.products.map((a) => a.images);
       let id = this.products.map((a) => a.id);
       // console.log(a);
       for (let j = 0; j < this.products.length; j++) {
         if (a == this.name[j]) {
-          this.unitPrice = unitPrice[j];
-          this.imageUrl = imageUrl[j];
+          this.price = price[j];
+          this.images = images[j];
           this.id = id[j];
           // console.log("imageUrl:" + this.imageUrl);
           // console.log(this.id);
@@ -229,8 +229,8 @@ export default {
         broadcastTitle: this.broadcastTitle,
         category: this.category,
         productName: this.productName,
-        imageUrl: this.imageUrl,
-        unitPrice: this.unitPrice,
+        images: this.images,
+        price: this.price,
         channelId: this.channelId,
         product: { id: this.id },
       };
