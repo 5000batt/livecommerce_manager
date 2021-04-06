@@ -5,6 +5,8 @@
         <v-list-item @click="navigateTo(item)">
           <template>
             <v-list-item-content>
+              <v-img height="100" width="50" src="https://static-cdn.jtvnw.net/cf_vods/d2nvs31859zcd8/59badeb1752de21e3117_wjddnjs813_41166806781_1616737989//thumb/thumb0-640x360.jpg">
+              </v-img>
               <v-list-item-title
                 v-text="item.broadcastTitle"
               ></v-list-item-title>
