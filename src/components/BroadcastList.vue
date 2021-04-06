@@ -1,5 +1,5 @@
 <template>
-  <v-list>
+  <v-list class="overflow-y-auto">
     <v-list-item-group>
       <template>
         <v-list-item @click="Broadcast(item)">
@@ -8,12 +8,10 @@
               <v-list-item-title
                 v-text="item.broadcastTitle"
               ></v-list-item-title>
-
               <v-list-item-subtitle
                 class="text--primary"
                 v-text="item.category"
               ></v-list-item-subtitle>
-
               <v-list-item-subtitle v-text="item.price"></v-list-item-subtitle>
             </v-list-item-content>
           </template>
@@ -30,12 +28,11 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <div v-for="(file, i) in item.imageFiles" :key="i">
+                    <div v-for="(file, i) in item.files" :key="i">
                       <v-img
                         height="100%"
-                        v-if="file.contentType.indexOf('image') > -1"
                         :src="file.dataUrl"
-                        :alt="file.fileame"
+                        :alt="file.fileName"
                       ></v-img>
                     </div>
                   </v-col>
@@ -67,6 +64,7 @@
                           label="대표이미지"
                           prepend-icon="mdi-image"
                           accept="image/png, image/jpeg, image/bmp"
+                          v-model="item.imageFiles"
                         ></v-file-input>
                       </v-col>
                       <v-col cols="12">
@@ -144,6 +142,10 @@ export default {
 
       this.name = name;
       this.categoryName = category;
+
+      // this.broadcasts.unshift(newBroadcast);
+      console.log(this.broadcasts[this.index].files[0].dataUrl);
+      // this.item.files.unshift(this.broadcasts[this.index].files[0].dataUrl);
     },
     del() {
       this.dialog = false;

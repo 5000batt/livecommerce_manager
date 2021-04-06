@@ -39,7 +39,7 @@
                           <v-col cols="12" md="6">
                             <v-img
                               height="100%"
-                              :src="images"
+                              :src="preview"
                               :alt="productName"
                             ></v-img>
                           </v-col>
@@ -72,7 +72,8 @@
                                   prepend-icon="mdi-image"
                                   accept="image/png, image/jpeg, image/bmp"
                                   v-model="imageFiles"
-                                  chips
+                                  multiple
+                                  @change="previewImage"
                                 ></v-file-input>
                               </v-col>
                               <v-col cols="12">
@@ -153,6 +154,7 @@ export default {
     categoryName: [],
     imageFiles: [],
     id: "",
+    preview: "",
   }),
   mounted() {
     this.getBroadcasts();
@@ -166,7 +168,8 @@ export default {
       if (result.status == 200) {
         this.broadcasts = result.data;
         // products가 object로 나옴
-        // console.log(this.broadcasts[0].products);
+        // console.log(this.broadcasts[0].product);
+        // console.log(this.broadcasts[0].files[0].dataUrl);
       }
     },
     async getProduct() {
@@ -202,10 +205,11 @@ export default {
       this.broadcastTitle = "";
       this.category = [];
       this.productName = "";
-      // this.imageFiles = [];
+      this.imageFiles = [];
       this.price = "";
       this.channelId = "";
       this.images = "";
+      this.preview = "";
     },
     async updateProduct(a) {
       let price = this.products.map((a) => a.price);
@@ -243,9 +247,13 @@ export default {
 
       if (result.status == 200) {
         const newBroadcast = result.data;
-        console.log(newBroadcast);
+        // console.log(newBroadcast);
+        // console.log(newBroadcast.id);
 
         newBroadcast.imageFiles = [];
+        // console.log(newBroadcast.imageFiles);
+        // console.log(this.imageFiles);
+        // console.log(this.imageFiles.length);
 
         if (this.imageFiles && this.imageFiles.length > 0) {
           for (let file of this.imageFiles) {
@@ -294,6 +302,14 @@ export default {
         });
       `;
       document.body.appendChild(twitch);
+    },
+    previewImage() {
+      const reader = new FileReader();
+      console.log(this.imageFiles[0]);
+      reader.readAsDataURL(this.imageFiles[0]);
+      reader.onload = () => {
+        this.preview = reader.result;
+      };
     },
   },
   // ...
