@@ -64,7 +64,7 @@
                           label="대표이미지"
                           prepend-icon="mdi-image"
                           accept="image/png, image/jpeg, image/bmp"
-                          v-model="item.imageFiles"
+                          v-model="item.files"
                         ></v-file-input>
                       </v-col>
                       <v-col cols="12">
@@ -143,8 +143,9 @@ export default {
       this.name = name;
       this.categoryName = category;
 
+      console.log(this.item.files);
       // this.broadcasts.unshift(newBroadcast);
-      console.log(this.broadcasts[this.index].files[0].dataUrl);
+      // console.log(this.broadcasts[this.index].files[0].dataUrl);
       // this.item.files.unshift(this.broadcasts[this.index].files[0].dataUrl);
     },
     del() {

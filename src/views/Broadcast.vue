@@ -207,7 +207,6 @@ export default {
       this.productName = "";
       this.imageFiles = [];
       this.price = "";
-      this.channelId = "";
       this.images = "";
       this.preview = "";
     },
@@ -238,6 +237,7 @@ export default {
         channelId: this.channelId,
         product: { id: this.id },
       };
+
       // console.log(this.id);
       const result = await api2.post(broadcast);
       // console.log(this.title);
@@ -305,6 +305,7 @@ export default {
     },
     previewImage() {
       const reader = new FileReader();
+      console.log(this.imageFiles);
       console.log(this.imageFiles[0]);
       reader.readAsDataURL(this.imageFiles[0]);
       reader.onload = () => {
