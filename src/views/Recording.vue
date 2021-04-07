@@ -3,8 +3,6 @@
     <v-container>
       <v-row dense>
         <v-col cols="12" md="11">
-          <!-- <v-img src="https://static-cdn.jtvnw.net/cf_vods/d2nvs31859zcd8/59badeb1752de21e3117_wjddnjs813_41166806781_1616737989//thumb/thumb0-640x360.jpg">
-          </v-img> -->
           <recording-list
             v-for="(item, i) in recordings"
             :key="i"
@@ -124,27 +122,26 @@ export default {
   }),
   mounted() {
     this.getRecording();
-    this.fetchVideos();
+    // this.fetchVideos();
   },
   methods: {
-    fetchVideos: function () {
-      let fetchLink = "https://api.twitch.tv/kraken/videos/963484987";
+    // fetchVideos: function () {
+    //   let fetchLink = "https://api.twitch.tv/kraken/videos/961108794";
 
-      fetch(fetchLink, {
-        method: "get",
-        headers: new Headers({
-          'Accept': 'Bearer application/vnd.twitchtv.v5+json',
-          'Client-ID': 'g3gnxt6eiqtcf12w6yv2uv2md10zgw',
-        }),
-      })
-        .then(function (response) {
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
-        });
-    },
-    //OAuth code - acthxtatdmhq087yyawwbi8stgex8t
+    //   fetch(fetchLink, {
+    //     method: "get",
+    //     headers: new Headers({
+    //       Accept: "Bearer application/vnd.twitchtv.v5+json",
+    //       "Client-ID": "g3gnxt6eiqtcf12w6yv2uv2md10zgw",
+    //     }),
+    //   })
+    //     .then(function (response) {
+    //       return response.json();
+    //     })
+    //     .then((data) => {
+    //       console.log(data);
+    //     });
+    // },
     async getBroadcast() {
       const result = await api2.list();
       // console.log(result);
@@ -158,7 +155,7 @@ export default {
 
       this.title = title;
       // console.log(title);
-      console.log(this.date);
+      // console.log(this.date);
 
       this.videoId = "";
       this.broadcastTitle = "";
@@ -191,8 +188,8 @@ export default {
     },
     async getRecording() {
       const result = await api4.list();
-      console.log(result);
-      console.log(result.data);
+      // console.log(result);
+      // console.log(result.data);
 
       if (result.status == 200) {
         this.recordings = result.data;
