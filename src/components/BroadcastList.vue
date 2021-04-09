@@ -143,6 +143,7 @@ export default {
       this.name = name;
       this.categoryName = category;
 
+      console.log(this.item);
       console.log(this.item.files);
       // this.broadcasts.unshift(newBroadcast);
       // console.log(this.broadcasts[this.index].files[0].dataUrl);
@@ -191,7 +192,17 @@ export default {
     async regBroadcast(item) {
       this.dialog = false;
 
-      const result = await api2.register(item.id);
+      const broadcast = {
+        broadcastTitle: item.broadcastTitle,
+        category: item.category,
+        productName: item.productName,
+        images: item.files[0].dataUrl,
+        price: item.price,
+        channelId: item.channelId,
+      };
+      console.log(item.files[0].dataUrl);
+
+      const result = await api2.register(item.id, broadcast);
       console.log(result);
       console.log(result.data);
     },
