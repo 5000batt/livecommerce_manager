@@ -52,6 +52,18 @@
                                 ></v-text-field>
                               </v-col>
                               <v-col cols="12">
+                                <v-text-field
+                                  label="채널아이디"
+                                  v-model="channelId"
+                                ></v-text-field>
+                              </v-col>
+                              <v-col cols="12">
+                                <v-text-field
+                                  label="상품주소"
+                                  v-model="productUri"
+                                ></v-text-field>
+                              </v-col>
+                              <v-col cols="12">
                                 <v-autocomplete
                                   :items="categoryName"
                                   label="카테고리"
@@ -95,18 +107,19 @@
                 </v-dialog>
               </v-card-title>
               <v-card-text>
-                <v-container>
+                <v-container style="max-height: 700px" class="overflow-y-auto">
                   <broadcast-list
                     v-for="(item, i) in broadcasts"
                     :key="i"
                     :item="item"
                     :index="i"
                     @del="delBroadcast"
+                    @reg="regBroadcast"
                   >
                   </broadcast-list>
                 </v-container>
               </v-card-text>
-              <v-footer absolute>
+              <!-- <v-footer absolute>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-text-field
@@ -119,7 +132,7 @@
                     >방송출력</v-btn
                   >
                 </v-card-actions>
-              </v-footer>
+              </v-footer> -->
             </v-card>
           </template>
         </v-col>
@@ -148,6 +161,7 @@ export default {
     name: [],
     price: "",
     images: "",
+    productUri: "",
     channelId: "",
     broadcastTitle: "",
     productName: "",
@@ -209,6 +223,8 @@ export default {
       this.price = "";
       this.images = "";
       this.preview = "";
+      this.channelId = "";
+      this.productUri = "";
     },
     async updateProduct(a) {
       let price = this.products.map((a) => a.price);
@@ -235,6 +251,7 @@ export default {
         images: this.images,
         price: this.price,
         channelId: this.channelId,
+        productUri: this.productUri,
         product: { id: this.id },
       };
 
@@ -274,6 +291,8 @@ export default {
 
         this.broadcasts.unshift(newBroadcast);
       }
+
+      location.reload();
     },
     async delBroadcast(index, id) {
       console.log(`index:${index} - id:${id}`);
@@ -285,8 +304,14 @@ export default {
         this.broadcasts.splice(index, 1);
       }
     },
-    broadcast() {
-      // console.log(this.channelId);
+    async regBroadcast(index, id) {
+      console.log(`index:${index} - id:${id}`);
+      console.log(this.broadcasts[index]);
+      console.log(this.broadcasts[index].channelId);
+      const result = await api2.register(id, this.broadcasts[index]);
+      console.log(result);
+      console.log(result.data);
+
       const twitch = document.createElement("script");
       twitch.innerHTML =
         `
@@ -294,7 +319,7 @@ export default {
           width: "100%",
           height: 780,
           channel: "` +
-        this.channelId +
+        this.broadcasts[index].channelId +
         `",
           // video: "951261050",
           // only needed if your site is also embedded on embed.example.com and othersite.example.com
@@ -303,6 +328,24 @@ export default {
       `;
       document.body.appendChild(twitch);
     },
+    // broadcast() {
+    //   // console.log(this.channelId);
+    //   const twitch = document.createElement("script");
+    //   twitch.innerHTML =
+    //     `
+    //   new Twitch.Embed("twitch-embed", {
+    //       width: "100%",
+    //       height: 780,
+    //       channel: "` +
+    //     this.channelId +
+    //     `",
+    //       // video: "951261050",
+    //       // only needed if your site is also embedded on embed.example.com and othersite.example.com
+    //       parent: ["embed.example.com", "othersite.example.com"]
+    //     });
+    //   `;
+    //   document.body.appendChild(twitch);
+    // },
     previewImage() {
       const reader = new FileReader();
       console.log(this.imageFiles);

@@ -1,5 +1,5 @@
 <template>
-  <v-list class="overflow-y-auto">
+  <v-list>
     <v-list-item-group>
       <template>
         <v-list-item @click="Broadcast(item)">
@@ -78,13 +78,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="#6441a5"
-                text
-                @click="regBroadcast(item)"
-                left
-                absolute
-              >
+              <v-btn color="#6441a5" text @click="reg(item)" left absolute>
                 등록
               </v-btn>
               <v-btn color="#6441a5" text @click="modBroadcast(item)">
@@ -143,16 +137,11 @@ export default {
       this.name = name;
       this.categoryName = category;
 
-      console.log(this.item);
+      // console.log(this.item);
       console.log(this.item.files);
       // this.broadcasts.unshift(newBroadcast);
       // console.log(this.broadcasts[this.index].files[0].dataUrl);
       // this.item.files.unshift(this.broadcasts[this.index].files[0].dataUrl);
-    },
-    del() {
-      this.dialog = false;
-
-      this.$emit("del", this.index, this.item.id);
     },
     async modBroadcast(item) {
       this.dialog = false;
@@ -189,23 +178,33 @@ export default {
         }
       }
     },
-    async regBroadcast(item) {
+    del() {
       this.dialog = false;
 
-      const broadcast = {
-        broadcastTitle: item.broadcastTitle,
-        category: item.category,
-        productName: item.productName,
-        images: item.files[0].dataUrl,
-        price: item.price,
-        channelId: item.channelId,
-      };
-      console.log(item.files[0].dataUrl);
-
-      const result = await api2.register(item.id, broadcast);
-      console.log(result);
-      console.log(result.data);
+      this.$emit("del", this.index, this.item.id);
     },
+    reg() {
+      this.dialog = false;
+
+      this.$emit("reg", this.index, this.item.id);
+    },
+    // async regBroadcast(item) {
+    //   this.dialog = false;
+
+    //   const broadcast = {
+    //     broadcastTitle: item.broadcastTitle,
+    //     category: item.category,
+    //     productName: item.productName,
+    //     images: item.files[0].dataUrl,
+    //     price: item.price,
+    //     channelId: item.channelId,
+    //   };
+    //   console.log(item.files[0].dataUrl);
+
+    //   const result = await api2.register(item.id, broadcast);
+    //   console.log(result);
+    //   console.log(result.data);
+    // },
   },
 };
 </script>

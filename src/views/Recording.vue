@@ -8,6 +8,7 @@
             :key="i"
             :item="item"
             :index="i"
+            @del="delRecording"
           >
           </recording-list>
         </v-col>
@@ -125,23 +126,6 @@ export default {
     // this.fetchVideos();
   },
   methods: {
-    // fetchVideos: function () {
-    //   let fetchLink = "https://api.twitch.tv/kraken/videos/961108794";
-
-    //   fetch(fetchLink, {
-    //     method: "get",
-    //     headers: new Headers({
-    //       Accept: "Bearer application/vnd.twitchtv.v5+json",
-    //       "Client-ID": "g3gnxt6eiqtcf12w6yv2uv2md10zgw",
-    //     }),
-    //   })
-    //     .then(function (response) {
-    //       return response.json();
-    //     })
-    //     .then((data) => {
-    //       console.log(data);
-    //     });
-    // },
     async getBroadcast() {
       const result = await api2.list();
       // console.log(result);
@@ -185,6 +169,8 @@ export default {
       if (result.status == 200) {
         this.recordings.unshift(newRecording);
       }
+
+      location.reload();
     },
     async getRecording() {
       const result = await api4.list();
@@ -193,6 +179,16 @@ export default {
 
       if (result.status == 200) {
         this.recordings = result.data;
+      }
+    },
+    async delRecording(index, id) {
+      console.log(`index:${index} - id:${id}`);
+      const result = await api4.del(id);
+      console.log(result);
+      console.log(result.data);
+
+      if (result.status == 200) {
+        this.recordings.splice(index, 1);
       }
     },
   },

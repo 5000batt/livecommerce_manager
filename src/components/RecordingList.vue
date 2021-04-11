@@ -2,14 +2,14 @@
   <v-list>
     <v-list-item-group>
       <template>
-        <v-list-item @click="navigateTo(item)">
+        <v-list-item>
           <template>
             <v-card outlined width="100%">
               <v-row>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="4" @click="navigateTo(item)">
                   <v-img height="300" width="500" :src="thumbNail"> </v-img>
                 </v-col>
-                <v-col cols="12" md="8">
+                <v-col cols="12" md="7">
                   <v-list-item-content>
                     <v-list-item-title
                       v-text="item.broadcastTitle"
@@ -22,6 +22,13 @@
                     <v-list-item-subtitle
                       v-text="item.date"
                     ></v-list-item-subtitle>
+                    <v-col cols="12" md="1">
+                      <v-card-actions>
+                        <v-btn right absolute top @click="del(item)"
+                          ><v-icon>mdi-delete</v-icon></v-btn
+                        >
+                      </v-card-actions>
+                    </v-col>
                   </v-list-item-content>
                 </v-col>
               </v-row>
@@ -79,6 +86,9 @@ export default {
         });
       }
       console.log(item);
+    },
+    del() {
+      this.$emit("del", this.index, this.item.id);
     },
   },
 };
