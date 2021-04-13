@@ -115,24 +115,11 @@
                     :index="i"
                     @del="delBroadcast"
                     @reg="regBroadcast"
+                    @output="output"
                   >
                   </broadcast-list>
                 </v-container>
               </v-card-text>
-              <!-- <v-footer absolute>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-text-field
-                    color="#6441a5"
-                    label="방송채널"
-                    v-model="channelId"
-                    >입력</v-text-field
-                  >
-                  <v-btn color="#6441a5" text @click.once="broadcast"
-                    >방송출력</v-btn
-                  >
-                </v-card-actions>
-              </v-footer> -->
             </v-card>
           </template>
         </v-col>
@@ -306,11 +293,15 @@ export default {
     },
     async regBroadcast(index, id) {
       console.log(`index:${index} - id:${id}`);
-      console.log(this.broadcasts[index]);
-      console.log(this.broadcasts[index].channelId);
+
       const result = await api2.register(id, this.broadcasts[index]);
       console.log(result);
       console.log(result.data);
+    },
+    async output(index, id) {
+      console.log(`index:${index} - id:${id}`);
+      console.log(this.broadcasts[index]);
+      console.log(this.broadcasts[index].channelId);
 
       const twitch = document.createElement("script");
       twitch.innerHTML =

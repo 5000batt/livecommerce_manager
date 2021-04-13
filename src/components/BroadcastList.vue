@@ -77,10 +77,11 @@
               </v-container>
             </v-card-text>
             <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="#6441a5" text @click="reg(item)" left absolute>
-                등록
+              <v-btn color="#6441a5" text @click="reg(item)"> 등록/종료 </v-btn>
+              <v-btn color="#6441a5" text @click.once="output(item)">
+                출력
               </v-btn>
+              <v-spacer></v-spacer>
               <v-btn color="#6441a5" text @click="modBroadcast(item)">
                 수정
               </v-btn>
@@ -188,23 +189,11 @@ export default {
 
       this.$emit("reg", this.index, this.item.id);
     },
-    // async regBroadcast(item) {
-    //   this.dialog = false;
+    output() {
+      this.dialog = false;
 
-    //   const broadcast = {
-    //     broadcastTitle: item.broadcastTitle,
-    //     category: item.category,
-    //     productName: item.productName,
-    //     images: item.files[0].dataUrl,
-    //     price: item.price,
-    //     channelId: item.channelId,
-    //   };
-    //   console.log(item.files[0].dataUrl);
-
-    //   const result = await api2.register(item.id, broadcast);
-    //   console.log(result);
-    //   console.log(result.data);
-    // },
+      this.$emit("output", this.index, this.item.id);
+    },
   },
 };
 </script>
