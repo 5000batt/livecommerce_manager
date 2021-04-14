@@ -6,10 +6,10 @@
           <template>
             <v-card outlined width="100%">
               <v-row>
-                <v-col cols="12" md="4" @click="navigateTo(item)">
-                  <v-img height="300" width="500" :src="thumbNail"> </v-img>
+                <v-col cols="12" md="3" @click="navigateTo(item)">
+                  <v-img height="200" width="300" :src="thumbNail"> </v-img>
                 </v-col>
-                <v-col cols="12" md="7">
+                <v-col cols="12" md="8">
                   <v-list-item-content>
                     <v-list-item-title
                       v-text="item.broadcastTitle"

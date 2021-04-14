@@ -1,10 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar color="#6441a5" dark app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-app-bar-title>라이브 커머스 관리자</v-app-bar-title>
-    </v-app-bar>
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer v-model="drawer" app clipped>
       <v-list dense>
         <v-list-item-group v-model="selectedItem" color="#6441a5">
           <v-list-item
@@ -22,6 +18,12 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
+
+    <v-app-bar color="#6441a5" dark app clipped-left>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-title>라이브 커머스 관리자</v-app-bar-title>
+    </v-app-bar>
+
     <v-main>
       <v-container fluid>
         <router-view></router-view>
