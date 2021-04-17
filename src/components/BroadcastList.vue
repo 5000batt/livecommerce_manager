@@ -78,9 +78,6 @@
             </v-card-text>
             <v-card-actions>
               <v-btn color="#6441a5" text @click="reg(item)"> 등록/종료 </v-btn>
-              <v-btn color="#6441a5" text @click.once="output(item)">
-                출력
-              </v-btn>
               <v-spacer></v-spacer>
               <v-btn color="#6441a5" text @click="modBroadcast(item)">
                 수정
@@ -188,11 +185,6 @@ export default {
       this.dialog = false;
 
       this.$emit("reg", this.index, this.item.id);
-    },
-    output() {
-      this.dialog = false;
-
-      this.$emit("output", this.index, this.item.id);
     },
   },
 };

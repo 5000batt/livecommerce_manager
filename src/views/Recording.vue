@@ -190,6 +190,8 @@ export default {
       if (result.status == 200) {
         this.recordings.splice(index, 1);
       }
+
+      location.reload();
     },
   },
 };

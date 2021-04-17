@@ -53,12 +53,6 @@
                               </v-col>
                               <v-col cols="12">
                                 <v-text-field
-                                  label="채널아이디"
-                                  v-model="channelId"
-                                ></v-text-field>
-                              </v-col>
-                              <v-col cols="12">
-                                <v-text-field
                                   label="상품주소"
                                   v-model="productUri"
                                 ></v-text-field>
@@ -115,7 +109,6 @@
                     :index="i"
                     @del="delBroadcast"
                     @reg="regBroadcast"
-                    @output="output"
                   >
                   </broadcast-list>
                 </v-container>
@@ -149,7 +142,6 @@ export default {
     price: "",
     images: "",
     productUri: "",
-    channelId: "",
     broadcastTitle: "",
     productName: "",
     categoryName: [],
@@ -159,6 +151,19 @@ export default {
   }),
   mounted() {
     this.getBroadcasts();
+
+    const twitch = document.createElement("script");
+    twitch.innerHTML = `
+      new Twitch.Embed("twitch-embed", {
+          width: "100%",
+          height: 780,
+          channel: "wjddnjs813",
+          // video: "951261050",
+          // only needed if your site is also embedded on embed.example.com and othersite.example.com
+          parent: ["embed.example.com", "othersite.example.com"]
+        });
+      `;
+    document.body.appendChild(twitch);
   },
   methods: {
     async getBroadcasts() {
@@ -210,7 +215,6 @@ export default {
       this.price = "";
       this.images = "";
       this.preview = "";
-      this.channelId = "";
       this.productUri = "";
     },
     async updateProduct(a) {
@@ -237,7 +241,6 @@ export default {
         productName: this.productName,
         images: this.images,
         price: this.price,
-        channelId: this.channelId,
         productUri: this.productUri,
         product: { id: this.id },
       };
@@ -298,45 +301,6 @@ export default {
       console.log(result);
       console.log(result.data);
     },
-    async output(index, id) {
-      console.log(`index:${index} - id:${id}`);
-      console.log(this.broadcasts[index]);
-      console.log(this.broadcasts[index].channelId);
-
-      const twitch = document.createElement("script");
-      twitch.innerHTML =
-        `
-      new Twitch.Embed("twitch-embed", {
-          width: "100%",
-          height: 780,
-          channel: "` +
-        this.broadcasts[index].channelId +
-        `",
-          // video: "951261050",
-          // only needed if your site is also embedded on embed.example.com and othersite.example.com
-          parent: ["embed.example.com", "othersite.example.com"]
-        });
-      `;
-      document.body.appendChild(twitch);
-    },
-    // broadcast() {
-    //   // console.log(this.channelId);
-    //   const twitch = document.createElement("script");
-    //   twitch.innerHTML =
-    //     `
-    //   new Twitch.Embed("twitch-embed", {
-    //       width: "100%",
-    //       height: 780,
-    //       channel: "` +
-    //     this.channelId +
-    //     `",
-    //       // video: "951261050",
-    //       // only needed if your site is also embedded on embed.example.com and othersite.example.com
-    //       parent: ["embed.example.com", "othersite.example.com"]
-    //     });
-    //   `;
-    //   document.body.appendChild(twitch);
-    // },
     previewImage() {
       const reader = new FileReader();
       console.log(this.imageFiles);
