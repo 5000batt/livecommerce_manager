@@ -19,7 +19,7 @@
           <li>
             <a href="https://dev.twitch.tv/console" target="_blank"
               >client Id key 발급</a
-            >
+            >(녹화 이용 시)
           </li>
           <v-img
             width="400"
@@ -30,13 +30,17 @@
       <v-col>
         <h2>OBS Studio</h2>
         <v-card width="400" height="620" class="d-flex flex-column">
-          <div style="left: 50%">
-            <v-img
-              width="200"
-              height="200"
-              src="https://static.twitchcdn.net/assets/obs_logors_1x-52d53b14faec28b76e16.png"
-            ></v-img>
-          </div>
+          <v-container>
+            <v-row>
+              <v-col class="d-flex justify-center">
+                <v-img
+                  max-width="200"
+                  height="200"
+                  src="https://static.twitchcdn.net/assets/obs_logors_1x-52d53b14faec28b76e16.png"
+                ></v-img>
+              </v-col>
+            </v-row>
+          </v-container>
           <v-card-title>Open Broadcaster Software</v-card-title>
           <v-card-subtitle>
             <a href="https://obsproject.com/" target="_blank"
